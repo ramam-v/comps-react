@@ -1,5 +1,6 @@
 import ButtonPage from "./pages/ButtonPage";
 import AccordionPage from "./pages/AccordionPage";
+import DropdownPage from "./pages/DropdownPage";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <ButtonPage> </ButtonPage>
         Accordion Page
         <AccordionPage />
+        <DropdownPage />
       </div>
     </div>
   );
