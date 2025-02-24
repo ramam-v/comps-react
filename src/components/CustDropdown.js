@@ -1,13 +1,29 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GoChevronDown } from "react-icons/go";
+import Panel from "./Panel";
 
 function CustDropdown({ config, value, onChange }) {
   const { options, label, name } = config;
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredValue, setHoveredValue] = useState(null);
-
+  const divEl = useRef();
   const dropdownId = `dropdown-${name}`;
   const listboxId = `listbox-${name}`;
+
+  useEffect(() => {
+    const handler = (event) => {
+      if (!divEl.current) {
+        return;
+      }
+      if (!divEl.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("click", handler, true);
+    return () => {
+      document.removeEventListener("click", handler);
+    };
+  }, []);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -45,15 +61,15 @@ function CustDropdown({ config, value, onChange }) {
   ));
 
   return (
-    <div className="mb-4">
+    <div ref={divEl} className="mb-4">
       <label
         htmlFor={dropdownId}
         className="block mb-2 text-sm font-medium text-gray-700"
       >
         {label}
       </label>
-      <div
-        className="relative w-full px-3 py-2 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer items-center"
+      <Panel
+        className="relative  px-3 py-2 text-gray-700 border-gray-300  shadow-sm cursor-pointer items-center"
         id={dropdownId}
         role="combobox"
         aria-expanded={isOpen}
@@ -63,7 +79,7 @@ function CustDropdown({ config, value, onChange }) {
       >
         <span>{value?.label || label}</span>
         <GoChevronDown className="absolute right-0.5 top-1/2 transform -translate-y-1/2 w-4 text-black-400" />
-      </div>
+      </Panel>
       {isOpen && (
         <div
           role="listbox"

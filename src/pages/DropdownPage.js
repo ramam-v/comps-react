@@ -36,8 +36,7 @@ function DropdownPage() {
   };
 
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-4">Dropdown Page</h1>
+    <div className="flex inline-grid grid-cols-1 place-items-center space-y-5">
       <Dropdown
         config={colorDropdownConfig}
         value={colorSelection}
