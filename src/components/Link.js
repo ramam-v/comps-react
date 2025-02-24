@@ -16,7 +16,7 @@ function Link({
   // Compose classes including active state
   // classNames utility helps manage conditional classes
   const classes = classNames(
-    "text-blue-500",
+    "block text-base select-none cursor-pointer",
     className,
     // Apply activeClassName if this link matches current path
     currentPath === to && activeClassName
