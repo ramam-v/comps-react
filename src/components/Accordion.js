@@ -1,73 +1,53 @@
-// Import necessary hooks and icons
+// Accordion.js - Expandable Accordion Component
+// This component creates an expandable/collapsible accordion interface
+
 import { useState } from "react";
 import { GoChevronUp, GoChevronLeft } from "react-icons/go";
 
 function Accordion({ items }) {
-  // Initialize state with 0 (first item expanded)
-  // expandedIndex keeps track of which accordion item is currently open
+  // State to track which section is expanded
+  // -1 means no section is expanded
   const [expandedIndex, setExpandedIndex] = useState(-1);
 
-  // Map through each item in the items array to create accordion panels
+  // Map through items array to create accordion sections
   const renderedItems = items.map((item, index) => {
-    // Check if current item is expanded by comparing its index with expandedIndex
+    // Check if this item is the expanded one
     const isExpanded = index === expandedIndex;
 
-    // Click handler function to update which item is expanded
+    // Handler to toggle expansion state
     const handleClick = () => {
-      if (expandedIndex === index) {
-        setExpandedIndex(-1);
-      } else {
-        setExpandedIndex(index);
-      }
+      // If this section is already expanded, collapse it
+      // Otherwise, expand this section
+      setExpandedIndex(isExpanded ? -1 : index);
     };
 
     return (
-      // Outer container for each accordion item
-      <div
-        key={index} // Unique key for React list rendering
-        className="mb-3 border-2 border-gray-300 rounded-lg" // Margin bottom, border, and rounded corners
-      >
-        {/* Header section that user clicks to expand/collapse */}
+      <div key={index} className="mb-3 border-2 border-gray-300 rounded-lg">
+        {/* Header section with click handler */}
         <div
           className="flex justify-between p-3 bg-gray-50 cursor-pointer items-center"
-          // flex: enables flexbox
-          // justify-between: spaces items apart
-          // p-3: padding
-          // bg-gray-50: light gray background
-          // cursor-pointer: shows hand cursor on hover
-          // items-center: vertically centers flex items
           onClick={handleClick}
         >
-          {/* Label text */}
           <div className="font-semibold">{item.label}</div>
 
-          {/* Icon section - shows up or down arrow based on expanded state */}
+          {/* Conditional rendering for expand/collapse icons */}
           <div>
             {isExpanded ? (
-              // Show up arrow if expanded
               <GoChevronUp className="text-xl" />
             ) : (
-              // Show down arrow if collapsed
               <GoChevronLeft className="text-xl" />
             )}
           </div>
         </div>
 
-        {/* Content section - only shown if item is expanded */}
-        {/* Using && for conditional rendering - if isExpanded is true, show content */}
+        {/* Content section - only shown when expanded */}
         {isExpanded && (
-          <div className="p-3 border-t border-gray-300">
-            {/* p-3: padding
-                border-t: top border
-                border-gray-300: border color */}
-            {item.content}
-          </div>
+          <div className="p-3 border-t border-gray-300">{item.content}</div>
         )}
       </div>
     );
   });
 
-  // Return the complete accordion wrapped in a container
   return <div className="w-full">{renderedItems}</div>;
 }
 
