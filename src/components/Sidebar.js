@@ -11,6 +11,7 @@ function Sidebar() {
     { label: "Accordion", path: "/accordion" },
     { label: "Buttons", path: "/button" },
     { label: "Modal", path: "/modal" },
+    { label: "Table", path: "/table" },
   ];
 
   // Map through links array to create navigation items
