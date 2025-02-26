@@ -1,4 +1,4 @@
-import CTable from "../components/Table";
+import Table from "../components/Table";
 import React from "react";
 
 function TablePage() {
@@ -332,10 +332,10 @@ function TablePage() {
 
   return (
     <div className="p-4 space-y-8">
-      <h1 className="text-2xl font-bold mb-4">CTable Examples with Sorting</h1>
+      <h1 className="text-2xl font-bold mb-4">Table Examples with Sorting</h1>
 
       <div className="bg-white p-4 rounded-lg shadow">
-        <CTable
+        <Table
           id="project-table"
           data={{ headers: projectHeaders, rows: projectData }}
           title="Project Management Dashboard"
@@ -352,7 +352,7 @@ function TablePage() {
       </div>
 
       <div className="bg-white p-4 rounded-lg shadow">
-        <CTable
+        <Table
           id="team-table"
           data={{ headers: teamHeaders, rows: teamData }}
           title="Team Member Directory"
