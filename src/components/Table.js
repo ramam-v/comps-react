@@ -145,17 +145,17 @@ function Table({
   };
 
   return (
-    <div
-      className={classNames(TABLE_STYLES.container, styles.container)}
-      data-table-id={tableId.current}
-    >
+    <div className={classNames(TABLE_STYLES.container, styles.container)}>
       {title && (
         <h2 className={classNames(TABLE_STYLES.title, styles.title)}>
           {title}
         </h2>
       )}
       <div className={classNames(TABLE_STYLES.wrapper, styles.wrapper)}>
-        <table className={classNames(TABLE_STYLES.table, styles.table)}>
+        <table
+          className={classNames(TABLE_STYLES.table, styles.table)}
+          id={tableId.current}
+        >
           <thead>
             <tr
               className={classNames(TABLE_STYLES.headerRow, styles.headerRow)}
