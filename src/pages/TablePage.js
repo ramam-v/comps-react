@@ -1,46 +1,98 @@
-import Table from "../components/Table";
+import CTable from "../components/Table";
 import React from "react";
 
 function TablePage() {
-  // ========== Table 1: User Information ==========
-  const userData = [
-    { id: 1, name: "John Doe", email: "john@example.com", status: "Active" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", status: "Pending" },
+  // ========== Table 1: Project Information ==========
+  const projectData = [
     {
-      id: 3,
-      name: "Robert Johnson",
-      email: "robert@example.com",
-      status: "Inactive",
+      id: "PRJ-001",
+      name: "Website Redesign",
+      manager: "Bhuvi",
+      status: "In Progress",
+      deadline: "2025-03-15",
+      budget: 75000,
+      priority: "High",
+    },
+    {
+      id: "PRJ-002",
+      name: "Mobile App Development",
+      manager: "Dhoni",
+      status: "Planning",
+      deadline: "2025-05-01",
+      budget: 120000,
+      priority: "Medium",
+    },
+    {
+      id: "PRJ-003",
+      name: "Database Migration",
+      manager: "Kohli",
+      status: "Completed",
+      deadline: "2025-02-10",
+      budget: 45000,
+      priority: "High",
+    },
+    {
+      id: "PRJ-004",
+      name: "Security Audit",
+      manager: "David Miller",
+      status: "On Hold",
+      deadline: "2025-04-20",
+      budget: 35000,
+      priority: "Low",
+    },
+    {
+      id: "PRJ-005",
+      name: "Cloud Infrastructure Setup",
+      manager: "Suryakumar",
+      status: "In Progress",
+      deadline: "2025-03-30",
+      budget: 90000,
+      priority: "Critical",
+    },
+    {
+      id: "PRJ-006",
+      name: "User Experience Research",
+      manager: "Bhuvi",
+      status: "Planning",
+      deadline: "2025-04-15",
+      budget: 28000,
+      priority: "Medium",
+    },
+    {
+      id: "PRJ-007",
+      name: "Payment Gateway Integration",
+      manager: "Kohli",
+      status: "In Progress",
+      deadline: "2025-03-25",
+      budget: 55000,
+      priority: "High",
+    },
+    {
+      id: "PRJ-008",
+      name: "Content Management System",
+      manager: "Rohit",
+      status: "Completed",
+      deadline: "2025-02-05",
+      budget: 42000,
+      priority: "Medium",
     },
   ];
 
-  const userHeaders = [
-    { column: "ID", key: "id", sort: true },
-    { column: "Name", key: "name", sort: true },
-    {
-      column: "Email",
-      key: "email",
-      sort: true,
-      render: (row) => (
-        <a
-          href={`mailto:${row.email}`}
-          className="text-blue-600 hover:underline"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {row.email}
-        </a>
-      ),
-    },
+  const projectHeaders = [
+    { column: "Project ID", key: "id", sort: true },
+    { column: "Project Name", key: "name", sort: true },
+    { column: "Project Manager", key: "manager", sort: true },
     {
       column: "Status",
-      key: "status",
       sort: true,
+      key: "status",
       render: (row) => {
         // Status-based styling
         const statusStyles = {
-          Active: "bg-green-200 text-green-800",
-          Pending: "bg-yellow-200 text-yellow-800",
-          Inactive: "bg-red-200 text-red-800",
+          "In Progress": "bg-blue-200 text-blue-800",
+          Planning: "bg-purple-200 text-purple-800",
+          Completed: "bg-green-200 text-green-800",
+          "On Hold": "bg-yellow-200 text-yellow-800",
         };
 
         return (
@@ -54,233 +106,282 @@ function TablePage() {
         );
       },
     },
-  ];
-
-  // ========== Table 2: Fruit Colors and Ratings ==========
-  const fruitData = [
-    { name: "Orange", color: "bg-orange-500", rating: 5 },
-    { name: "Apple", color: "bg-red-500", rating: 3 },
-    { name: "Banana", color: "bg-yellow-500", rating: 2 },
-    { name: "Lime", color: "bg-green-500", rating: 4 },
-    { name: "Mango", color: "bg-yellow-300", rating: 1 },
-  ];
-
-  const fruitHeaders = [
-    { column: "Fruit", key: "name", sort: true },
     {
-      column: "Color",
-      key: "color",
-      sort: false,
+      column: "Deadline",
+      key: "deadline",
+      sort: true,
+      render: (row) => {
+        // Format date for display
+        const date = new Date(row.deadline);
+        return date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      },
+    },
+    {
+      column: "Budget",
+      key: "budget",
+      sort: true,
+      render: (row) => {
+        return `$${row.budget.toLocaleString()}`;
+      },
+    },
+    {
+      column: "Priority",
+      key: "priority",
+      sort: true,
+      render: (row) => {
+        const priorityStyles = {
+          Low: "bg-gray-200 text-gray-800",
+          Medium: "bg-blue-200 text-blue-800",
+          High: "bg-orange-200 text-orange-800",
+          Critical: "bg-red-200 text-red-800",
+        };
+
+        return (
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium ${
+              priorityStyles[row.priority] || ""
+            }`}
+          >
+            {row.priority}
+          </span>
+        );
+      },
+    },
+  ];
+
+  // ========== Table 2: Team Member Directory ==========
+  const teamData = [
+    {
+      id: 1,
+      name: "David Warner",
+      role: "Developer",
+      department: "Engineering",
+      contact: "david@example.com",
+      yearsOfService: 3,
+      skillLevel: 4,
+      location: "Sydney",
+    },
+    {
+      id: 2,
+      name: "Adam Gilchrist",
+      role: "Designer",
+      department: "Creative",
+      contact: "adam@example.com",
+      yearsOfService: 5,
+      skillLevel: 5,
+      location: "Perth",
+    },
+    {
+      id: 3,
+      name: "Brett Lee",
+      role: "Product Manager",
+      department: "Product",
+      contact: "brett@example.com",
+      yearsOfService: 2,
+      skillLevel: 4,
+      location: "Melbourne",
+    },
+    {
+      id: 4,
+      name: "Shane Warne",
+      role: "QA Engineer",
+      department: "Engineering",
+      contact: "shane@example.com",
+      yearsOfService: 1,
+      skillLevel: 3,
+      location: "Sydney",
+    },
+    {
+      id: 5,
+      name: "Ricky Ponting",
+      role: "DevOps Engineer",
+      department: "Operations",
+      contact: "ricky@example.com",
+      yearsOfService: 6,
+      skillLevel: 5,
+      location: "Brisbane",
+    },
+    {
+      id: 6,
+      name: "Michael Clarke",
+      role: "UI Designer",
+      department: "Creative",
+      contact: "michael@example.com",
+      yearsOfService: 2,
+      skillLevel: 3,
+      location: "Melbourne",
+    },
+    {
+      id: 7,
+      name: "Glenn McGrath",
+      role: "Backend Developer",
+      department: "Engineering",
+      contact: "glenn@example.com",
+      yearsOfService: 4,
+      skillLevel: 5,
+      location: "Sydney",
+    },
+    {
+      id: 8,
+      name: "Steve Waugh",
+      role: "Project Manager",
+      department: "Product",
+      contact: "steve@example.com",
+      yearsOfService: 7,
+      skillLevel: 4,
+      location: "Perth",
+    },
+  ];
+
+  const teamHeaders = [
+    { column: "ID", key: "id", sort: true },
+    { column: "Name", key: "name", sort: true },
+    { column: "Role", key: "role", sort: true },
+    { column: "Department", key: "department", sort: true },
+    {
+      column: "Contact",
+      key: "contact",
+      sort: true,
       render: (row) => (
-        <div
-          className={`w-8 h-8 rounded-md ${row.color}`}
-          title={row.color}
-        ></div>
+        <a
+          href={`mailto:${row.contact}`}
+          className="text-blue-600 hover:underline"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {row.contact}
+        </a>
       ),
     },
     {
-      column: "Rating",
-      key: "rating",
+      column: "Location",
+      key: "location",
+      sort: true,
+    },
+    {
+      column: "Experience",
+      sort: true,
+      key: "yearsOfService",
+      render: (row) => {
+        // Create a visual indicator of experience
+        const years = row.yearsOfService;
+        const dots = Array.from({ length: years }, (_, i) => (
+          <span
+            key={i}
+            className="inline-block w-3 h-3 rounded-full bg-green-500 mr-1"
+          ></span>
+        ));
+
+        return (
+          <div className="flex items-center">
+            <div className="mr-2">{dots}</div>
+            <span className="text-sm text-gray-600">
+              {years} {years === 1 ? "year" : "years"}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      column: "Skill Level",
+      key: "skillLevel",
       sort: true,
       render: (row) => {
-        // Render stars based on rating
+        const level = row.skillLevel;
         const stars = Array.from({ length: 5 }, (_, i) => (
           <span
             key={i}
-            className={i < row.rating ? "text-yellow-500" : "text-gray-300"}
+            className={`inline-block text-lg ${
+              i < level ? "text-yellow-500" : "text-gray-300"
+            }`}
           >
             ★
           </span>
         ));
-        return <div className="flex">{stars}</div>;
-      },
-    },
-  ];
 
-  // ========== Table 3: Search Engine Directory ==========
-  // Add action priority property to data for sorting the Actions column
-  const searchEngineData = [
-    {
-      name: "Google",
-      color: "bg-blue-500",
-      queryLink: "https://google.com/search?q=",
-      actionPriority: 1, // Add priority for sorting Actions
-    },
-    {
-      name: "Bing",
-      color: "bg-teal-500",
-      queryLink: "https://www.bing.com/search?q=",
-      actionPriority: 2,
-    },
-    {
-      name: "DuckDuckGo",
-      color: "bg-orange-500",
-      queryLink: "https://duckduckgo.com/?q=",
-      actionPriority: 3,
-    },
-    {
-      name: "Yahoo",
-      color: "bg-purple-500",
-      queryLink: "https://search.yahoo.com/search?p=",
-      actionPriority: 4,
-    },
-    {
-      name: "Ecosia",
-      color: "bg-green-500",
-      queryLink: "https://www.ecosia.org/search?q=",
-      actionPriority: 5,
-    },
-  ];
-
-  const searchEngineHeaders = [
-    { column: "Search Engine", key: "name", sort: true },
-    {
-      column: "Logo Color",
-      key: "color",
-      sort: false,
-      render: (row) => (
-        <div
-          className={`w-8 h-8 rounded-md ${row.color}`}
-          title={row.color}
-        ></div>
-      ),
-    },
-    {
-      column: "Query Link",
-      key: "queryLink",
-      sort: false,
-      render: (row) => {
-        const displayUrl = row.queryLink
-          .replace(/^https?:\/\//, "")
-          .substring(0, 30);
-        return (
-          <a
-            href={row.queryLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {displayUrl}
-          </a>
-        );
-      },
-    },
-    {
-      column: "Actions",
-      key: "actionPriority", // Changed from "name" to "actionPriority" for proper sorting
-      sort: true, // Changed from false to true to enable sorting
-      render: (row) => {
-        // Map search engines to button colors
-        const colorMap = {
-          Google: "bg-blue-500 hover:bg-blue-700",
-          Bing: "bg-teal-500 hover:bg-teal-700",
-          DuckDuckGo: "bg-orange-500 hover:bg-orange-700",
-          Yahoo: "bg-purple-500 hover:bg-purple-700",
-          Ecosia: "bg-green-500 hover:bg-green-700",
-        };
-
-        return (
-          <button
-            className={`${
-              colorMap[row.name] || "bg-gray-500 hover:bg-gray-700"
-            } text-white font-bold py-1 px-2 rounded`}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSearch(row);
-            }}
-          >
-            Search
-          </button>
-        );
+        return <div>{stars}</div>;
       },
     },
   ];
 
   // Custom styles for each table
   const customStyles1 = {
-    headerRow: "bg-blue-300",
-    bodyRow: "bg-blue-50 hover:bg-blue-100",
+    headerRow: "bg-indigo-300",
+    bodyRow: "bg-indigo-50 hover:bg-indigo-100",
+    title: "text-indigo-800",
   };
 
   const customStyles2 = {
-    headerRow: "bg-red-300",
-    bodyRow: "bg-red-50 hover:bg-red-100",
-  };
-
-  const customStyles3 = {
-    headerRow: "bg-yellow-200",
-    bodyRow: "bg-yellow-50 hover:bg-yellow-100",
+    headerRow: "bg-emerald-300",
+    bodyRow: "bg-emerald-50 hover:bg-emerald-100",
+    title: "text-emerald-800",
   };
 
   // Row click handlers
   const handleRowClick = (row, rowIndex) => {
-    console.log(`Row ${rowIndex} clicked:`, row);
+    console.log(`Project Row ${rowIndex} clicked:`, row);
   };
 
-  // Special handler for search engine search
-  const handleSearch = (row) => {
-    const searchTerm = prompt(`Enter search term for ${row.name}:`);
-    if (searchTerm) {
-      // Construct the search URL using the query link
-      const searchUrl = `${row.queryLink}${encodeURIComponent(searchTerm)}`;
-      // Open the search URL in a new tab
-      window.open(searchUrl, "_blank");
-    }
-  };
-
-  // Special handler for search engine row click
-  const handleSearchEngineClick = (row) => {
-    handleSearch(row);
+  const handleTeamRowClick = (row) => {
+    console.log(`Team Member clicked:`, row);
+    alert(`Contact ${row.name} at ${row.contact}`);
   };
 
   return (
     <div className="p-4 space-y-8">
-      <h1 className="text-2xl font-bold mb-4">Table Examples</h1>
+      <h1 className="text-2xl font-bold mb-4">CTable Examples with Sorting</h1>
 
       <div className="bg-white p-4 rounded-lg shadow">
-        <Table
-          data={{ headers: userHeaders, rows: userData }}
-          title="User Information"
+        <CTable
+          id="project-table"
+          data={{ headers: projectHeaders, rows: projectData }}
+          title="Project Management Dashboard"
           styles={customStyles1}
           onRowClick={handleRowClick}
         />
         <div className="mt-2 text-sm text-gray-600">
           <p>
-            This table demonstrates email links and status badges with JSON
-            object data.
+            This table demonstrates a project management dashboard with status
+            indicators. Try sorting by different columns like Project ID,
+            Manager, Deadline, or Budget.
           </p>
         </div>
       </div>
 
       <div className="bg-white p-4 rounded-lg shadow">
-        <Table
-          data={{ headers: fruitHeaders, rows: fruitData }}
-          title="Fruit Colors and Ratings"
+        <CTable
+          id="team-table"
+          data={{ headers: teamHeaders, rows: teamData }}
+          title="Team Member Directory"
           styles={customStyles2}
-          onRowClick={handleRowClick}
+          onRowClick={handleTeamRowClick}
         />
         <div className="mt-2 text-sm text-gray-600">
           <p>
-            This table demonstrates color swatches and star ratings with JSON
-            object data.
+            This table shows team members with their experience visualized. Test
+            the sorting functionality on numeric fields like Years of Service
+            and on text fields like Location. Click on any row to see contact
+            information.
           </p>
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-lg shadow">
-        <Table
-          data={{ headers: searchEngineHeaders, rows: searchEngineData }}
-          title="Search Engine Directory"
-          styles={customStyles3}
-          onRowClick={handleSearchEngineClick}
-        />
-        <div className="mt-2 text-sm text-gray-600">
-          <p>
-            Click on any row to search using that search engine, or use the
-            search button.
-          </p>
-        </div>
+      <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+        <h2 className="text-lg font-semibold mb-2">Sorting Functionality</h2>
+        <p className="mb-2">
+          The tables now have full sorting functionality with these features:
+        </p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>Click once on a column header to sort ascending</li>
+          <li>Click again on the same column to sort descending</li>
+          <li>Click a third time to return to the original order</li>
+          <li>Each table has independent sorting state</li>
+          <li>Proper handling of both text and numeric values</li>
+          <li>Visual indicators show the current sort direction</li>
+        </ul>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
-// Table.js - Improved Table Component with JSON Object Support
-import React, { useState, useMemo } from "react";
+// CTable.js - Table Component with Isolated Rendering
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import classNames from "classnames";
 
 // Default table styles
@@ -17,7 +17,7 @@ const TABLE_STYLES = {
 };
 
 /**
- * Table Component
+ * CTable Component - Table with isolated sorting functionality
  * @param {Object} props
  * @param {Object} props.data - Contains headers and rows
  * @param {Array<Object>} props.data.headers - Header definitions
@@ -25,59 +25,130 @@ const TABLE_STYLES = {
  * @param {string} [props.title] - Optional title
  * @param {Object} [props.styles] - Custom styles
  * @param {Function} [props.onRowClick] - Row click handler
+ * @param {string} [props.id] - Unique identifier for the table
  * @returns {React.ReactElement}
  */
-function Table({ data, title = "Data Table", styles = {}, onRowClick }) {
+function Table({
+  data,
+  title = "Data Table",
+  styles = {},
+  onRowClick,
+  id = "table",
+}) {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const tableId = useRef(
+    id || `table-${Math.random().toString(36).substr(2, 9)}`
+  );
 
   // Process headers to ensure a consistent structure
   const processedHeaders = useMemo(() => {
     return data.headers.map((header) => ({
       column: header.column,
       key: header.key, // Key-based access instead of index
-      sort: header.sort ?? true, // Default sorting enabled
+      sort: header.sort ?? false, // Default sorting disabled
       render: header.render || ((row) => row[header.key]), // Default renderer
     }));
   }, [data.headers]);
 
   // Sort function
   const sortedRows = useMemo(() => {
-    if (!sortConfig.key) return data.rows;
+    // If no sort key is specified, return the original rows without sorting
+    if (!sortConfig.key) {
+      return data.rows;
+    }
 
-    return [...data.rows].sort((a, b) => {
+    // Create a copy of the rows array to avoid mutating the original data
+    let rowsCopy = [...data.rows];
+
+    // Sort the copied array
+    rowsCopy.sort((a, b) => {
+      // Extract the values to compare from both rows
       const valueA = a[sortConfig.key];
       const valueB = b[sortConfig.key];
 
+      // Handle numeric values
       if (typeof valueA === "number" && typeof valueB === "number") {
-        return sortConfig.direction === "asc"
-          ? valueA - valueB
-          : valueB - valueA;
+        // For ascending order
+        if (sortConfig.direction === "asc") {
+          return valueA - valueB;
+        }
+        // For descending order
+        else {
+          return valueB - valueA;
+        }
       }
-      return sortConfig.direction === "asc"
-        ? String(valueA).localeCompare(String(valueB))
-        : String(valueB).localeCompare(String(valueA));
+      // Handle string values (or convert any other types to strings)
+      else {
+        // For ascending order
+        if (sortConfig.direction === "asc") {
+          return String(valueA).localeCompare(String(valueB));
+        }
+        // For descending order
+        else {
+          return String(valueB).localeCompare(String(valueA));
+        }
+      }
     });
+
+    return rowsCopy;
   }, [data.rows, sortConfig]);
 
+  // Log only when this specific table instance changes
+  useEffect(() => {
+    console.log(`Table ${tableId.current} - Headers:`, processedHeaders);
+    console.log(`Table ${tableId.current} - Sort config:`, sortConfig);
+  }, [processedHeaders, sortConfig]);
+
   const requestSort = (key) => {
-    setSortConfig({
-      key,
-      direction:
-        sortConfig.key === key && sortConfig.direction === "asc"
-          ? "desc"
-          : "asc",
-    });
+    // Check if we're already sorting by this key
+    if (sortConfig.key === key) {
+      // If we are already sorting by this key, check the current direction
+      if (sortConfig.direction === "asc") {
+        // If current direction is ascending, switch to descending
+        setSortConfig({
+          key: key,
+          direction: "desc",
+        });
+      } else if (sortConfig.direction === "desc") {
+        // If current direction is descending, clear sorting to return to original order
+        setSortConfig({
+          key: null,
+          direction: null,
+        });
+      }
+    } else {
+      // If we're sorting by a new key, default to ascending direction
+      setSortConfig({
+        key: key,
+        direction: "asc",
+      });
+    }
   };
 
-  const getSortIcon = (key) => {
-    if (sortConfig.key !== key) return null;
-    return (
-      <span className="ml-1">{sortConfig.direction === "asc" ? "▲" : "▼"}</span>
-    );
+  const getSortIcon = (key, sort) => {
+    if (sort) {
+      // If we're not sorting by this column, or sortConfig.key is null (unsorted state)
+      if (sortConfig.key !== key || sortConfig.key === null) {
+        // Return a neutral icon or null
+        return <span className="ml-1 text-gray-300">▲▼</span>;
+      }
+      // If we are sorting by this column
+      if (sortConfig.direction === "asc") {
+        // Ascending sort
+        return <span className="ml-1 text-blue-500">▲</span>;
+      } else if (sortConfig.direction === "desc") {
+        // Descending sort
+        return <span className="ml-1 text-blue-500">▼</span>;
+      }
+    }
+    return null;
   };
 
   return (
-    <div className={classNames(TABLE_STYLES.container, styles.container)}>
+    <div
+      className={classNames(TABLE_STYLES.container, styles.container)}
+      data-table-id={tableId.current}
+    >
       {title && (
         <h2 className={classNames(TABLE_STYLES.title, styles.title)}>
           {title}
@@ -99,7 +170,7 @@ function Table({ data, title = "Data Table", styles = {}, onRowClick }) {
                   onClick={sort ? () => requestSort(key) : undefined}
                   title={sort ? "Click to sort" : undefined}
                 >
-                  {column} {getSortIcon(key)}
+                  {column} {getSortIcon(key, sort)}
                 </th>
               ))}
             </tr>
