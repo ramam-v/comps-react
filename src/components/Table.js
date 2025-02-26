@@ -35,7 +35,7 @@ function Table({
   onRowClick,
   id = "table",
 }) {
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const tableId = useRef(
     id || `table-${Math.random().toString(36).substr(2, 9)}`
   );
