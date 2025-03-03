@@ -12,6 +12,7 @@ function Sidebar() {
     { label: "Buttons", path: "/button" },
     { label: "Modal", path: "/modal" },
     { label: "Table", path: "/table" },
+    { label: "Counter", path: "/counter" },
   ];
 
   // Map through links array to create navigation items
