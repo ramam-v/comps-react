@@ -6,7 +6,7 @@ const INCREMENT_COUNT = "increment-count";
 const DECREMENT_COUNT = "decrement-count";
 const HANDLE_CHANGE = "handle-change";
 const ADD_VALUE_TO_COUNT = "add-value-to-count";
-const RESET_VALUETOADD = "reset-valueToAdd";
+
 /**
  * Reducer function for managing state updates
  * @param {Object} state - Current state object
